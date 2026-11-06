@@ -2,15 +2,25 @@
 
 #define DAC_PIN 25
 
-void setup() {}
+int delays[] = {5, 20, 50};
+
+void setup() {
+  Serial.begin(115200);
+}
 
 void loop() {
-  for (int value = 0; value <= 255; value++) {   // getting brighter
-    dacWrite(DAC_PIN, value);
-    delay(20);
-  }
-  for (int value = 255; value >= 0; value--) {   // getting dimmer
-    dacWrite(DAC_PIN, value);
-    delay(20);
+  for (int i = 0; i < 3; i++) {
+    Serial.print("Fade with delay = ");
+    Serial.print(delays[i]);
+    Serial.println(" ms");
+
+    for (int value = 0; value <= 255; value++) {   // brighter
+      dacWrite(DAC_PIN, value);
+      delay(delays[i]);
+    }
+    for (int value = 255; value >= 0; value--) {   // dimmer
+      dacWrite(DAC_PIN, value);
+      delay(delays[i]);
+    }
   }
 }
