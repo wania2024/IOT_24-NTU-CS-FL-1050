@@ -1,16 +1,15 @@
 #include <Arduino.h>
 
-#define DAC_PIN 26   // DAC2
+#define DAC_PIN 25
+#define PWM_PIN 16
+#define PWM_CHANNEL 0
 
-void setup() {}
+void setup() {
+  ledcSetup(PWM_CHANNEL, 5000, 8);      // channel, 5 kHz, 8-bit
+  ledcAttachPin(PWM_PIN, PWM_CHANNEL);  // connect pin to channel
+}
 
 void loop() {
-  for (int value = 0; value <= 255; value++) {
-    dacWrite(DAC_PIN, value);
-    delay(20);
-  }
-  for (int value = 255; value >= 0; value--) {
-    dacWrite(DAC_PIN, value);
-    delay(20);
-  }
+  dacWrite(DAC_PIN, 128);               // steady voltage
+  ledcWrite(PWM_CHANNEL, 128);          // 128/255 duty, about 50%
 }
